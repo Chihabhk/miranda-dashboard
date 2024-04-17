@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    MainContainer,
-    Form,
-    Label,
-    Input,
-    Button,
-    Message,
-} from "./LoginStyle";
+import { MainContainer, Form, Label, Input, Button } from "./LoginStyle";
 import { useLogin } from "../../components/LoginProvider";
 
 function Login() {
     const login = useLogin();
-
-    const [mail, setMail] = useState("");
-
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const navigate = useNavigate();
 
     if (localStorage.getItem("user")) {
@@ -25,7 +15,7 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        login.dispatch({ user: { mail, password }, type: "login" });
+        login.dispatch({ user: { email, password }, type: "login" });
 
         setTimeout(() => {
             if (localStorage.getItem("user")) {
@@ -34,11 +24,9 @@ function Login() {
 
         setTimeout(() => navigate("/"), 100);
     };
-
     const handleMail = (e) => {
-        setMail(e.target.value);
+        setEmail(e.target.value);
     };
-
     const handlePassword = (e) => {
         setPassword(e.target.value);
     };
@@ -46,8 +34,8 @@ function Login() {
     return (
         <MainContainer>
             <Form onSubmit={handleSubmit}>
-                <Message>Email: chihabhk@gmail.com</Message>
-                <Message>Password: admin</Message>
+                {/* <Message>Email: chihabhk@gmail.com</Message>
+                <Message>Password: admin</Message> */}
                 <Label htmlFor="mail">Email</Label>
                 <Input
                     type="text"
