@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import rooms from "../../data/rooms/rooms.json";
+import rooms from "../data/rooms/rooms.json";
 
 function delay(data) {
     return new Promise((resolve) => {
