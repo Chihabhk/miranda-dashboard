@@ -9,18 +9,36 @@ export const useLogin = () => {
 const reducer = (state, action) => {
     switch (action.type) {
         case "login":
-            if (
-                action.user.mail === "chihabhk@gmail.com" &&
-                action.user.password === "admin"
-            ) {
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify({ mail: action.user.mail, isLogged: true })
-                );
-                return { ...state, mail: action.user.mail, isLogged: true };
+            let token = localStorage.getItem("Token");
+            if (token && token !== "undefined") {
+                fetch("http:localhost:8080/auth/validateToken", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.valid) {
+                            return {
+                                ...state,
+                                mail: action.payload.mail,
+                                isLogged: true,
+                            };
+                        } else {
+                            localStorage.removeItem("Token");
+                            return { ...state };
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        return { ...state };
+                    });
             } else {
-                return { ...state, isLogged: false };
+                return { ...state };
             }
+            break;
         case "logout":
             localStorage.removeItem("user");
             return { ...state, mail: "", isLogged: false };
